@@ -39,7 +39,7 @@ namespace Buzz.TxLeague.Women.Config
             this.idProvider.Load().Wait();
         }
 
-        public async Task Handle()
+        public void Handle()
         {
             //this._dgsContext.Config.Load();
             //this._dgsContext.League.Load();

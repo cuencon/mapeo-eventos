@@ -25,7 +25,7 @@ namespace Buzz.TxLeague.Women.Config.Dgs
         {
             return new DbContextOptionsBuilder<DgsContext>()
                 //.UseSqlServer("Server=172.16.200.58;User Id=sa;Password=Bo0ki3SAAuth1;Initial Catalog=DGSData;")
-                .UseSqlServer("Server=10.0.0.13;User Id=sportbookdba;Password=lumalu;Initial Catalog=DGSData;")
+                .UseSqlServer("Server=10.0.0.13;User Id=sportbookdba;Password=lumalu;Initial Catalog=DGSData;TrustServerCertificate=true")
                 .Options;
         }
 

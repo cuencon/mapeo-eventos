@@ -11,42 +11,40 @@ namespace Buzz.TxLeague.Women.Config.Utils
     public static class SyncEventsToDGS
     {
         public static void RecreateGamesBulkTask(string arrayOfEventIds)
-        {
-            var eventsIdsArray = arrayOfEventIds.Split('\u002C');
-            var result = string.Empty;
+        {            
+            var eventsIdsArray = arrayOfEventIds.Replace(",", " ");
             var hostname = "10.0.0.181";
             var username = "sysusr";
             var password = "Qev5?AA.";
-            using (var client = new SshClient(hostname, username, password))
+            int port = 22;
+
+            Chilkat.Ssh ssh = new Chilkat.Ssh();
+
+            bool success = ssh.Connect(hostname, port);
+            if (success != true)
             {
-                client.Connect();
-                var iter = 0;
-                foreach (var item in eventsIdsArray)
-                {
-                    var cmd = client.CreateCommand($"cd Test/LineshouseSnapshot; dotnet Ls-dgs-sync.dll {Int32.Parse(item)}");
-                    var response = cmd.BeginExecute();
-
-                    using (var reader =
-                               new StreamReader(cmd.OutputStream, Encoding.UTF8, true, 1024, true))
-                    {
-                        while (!response.IsCompleted || !reader.EndOfStream)
-                        {
-                            string line = reader.ReadLine();
-                            if (line != null)
-                            {
-                                result += line + " | ";
-                            }
-                        }
-                        iter++;
-                    }
-
-                    decimal percent = (decimal)((decimal)(iter / (decimal)eventsIdsArray.Length) * 100);
-                    Console.WriteLine($"Advance: {Math.Round(percent, 2)}");
-
-                    result.TrimEnd('|');
-                }
-                client.Disconnect();
+                Console.WriteLine(ssh.LastErrorText);
+                return;
             }
+
+            // Authenticate using login/password:
+            success = ssh.AuthenticatePw(username, password);
+            if (success != true)
+            {
+                Console.WriteLine(ssh.LastErrorText);
+                return;
+            }
+
+            // Send some commands and get the output.
+            string strOutput = ssh.QuickCommand($"cd Test/LineshouseSnapshot; for i in {eventsIdsArray}; do dotnet Ls-dgs-sync.dll $i; done", "ansi");
+            if (ssh.LastMethodSuccess != true)
+            {
+                Console.WriteLine(ssh.LastErrorText);
+                return;
+            }
+
+            Console.WriteLine("---- Events Pull ----");
+            Console.WriteLine(strOutput);       
         }
     }
 }

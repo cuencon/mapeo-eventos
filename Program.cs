@@ -1,8 +1,5 @@
 ﻿using Buzz.TxLeague.Women.Config.Utils;
-using Renci.SshNet;
 using System;
-using System.IO;
-using System.Text;
 
 namespace Buzz.TxLeague.Women.Config
 {
@@ -22,9 +19,9 @@ namespace Buzz.TxLeague.Women.Config
             {
                 Console.WriteLine("Select the option");
                 Console.WriteLine("1 - Fix Tennis Events landing on Default Tennis League and sync with DGS database");
-                Console.WriteLine("2 - Set new Key for the configuration of leagues For Player Propositions OverUnder");
-                Console.WriteLine("3 - Set new League for PROPS in the config for non-major basketball and baseball leagues");
-                Console.WriteLine("4 - Change the SportId from MU to SOC, for Futsal leagues in DGS");
+                //Console.WriteLine("2 - Check the events to be mapped from other leagues");
+                //Console.WriteLine("3 - Set new League for PROPS in the config for non-major basketball and baseball leagues");
+                //Console.WriteLine("4 - Change the SportId from MU to SOC, for Futsal leagues in DGS");
                 response = Console.ReadLine();
                 switch (response.ToUpper())
                 {
@@ -34,8 +31,9 @@ namespace Buzz.TxLeague.Women.Config
                         break;
 
                     case "2":
-                        var handler = new SetNewConfigForPlayerPropsOverUnder(new Lineshouse.LineshouseContext(), new());
-                        handler.Handle();
+                        //var handler = new SetNewConfigForPlayerPropsOverUnder(new Lineshouse.LineshouseContext(), new());
+                        //handler.Handle();
+                        CheckEventsFromOtherLeagues.Check("2023-04-4 00:00:00");
                         break;
 
                     case "3":
