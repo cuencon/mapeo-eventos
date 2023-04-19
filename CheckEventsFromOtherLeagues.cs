@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Buzz.TxLeague.Women.Config.Utils;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -33,42 +34,21 @@ namespace Buzz.TxLeague.Women.Config
                 return;
             }
 
-            // Start a shell session.
-            // (The QuickShell method was added in Chilkat v9.5.0.65)
-            int channelNum = ssh.QuickShell();
-            if (channelNum < 0)
+            // Send some commands and get the output.            
+            string strOutput = ssh.QuickCommand($"echo \"Qev5?AA.\" | sudo -S -p  \"\" journalctl -p 4 -u dgs-consumer-v2@1.service -u dgs-consumer-v2@2.service -u dgs-consumer-v2@3.service -u dgs-consumer-v2@4.service -u dgs-consumer-v2@5.service -u dgs-consumer-v2@6.service --since \"{date} 00:00:00\" | grep 'Config with LeagueI'\n", "ansi");
+            if (ssh.LastMethodSuccess != true)
             {
                 Console.WriteLine(ssh.LastErrorText);
                 return;
             }
 
-            Chilkat.StringBuilder sbCommands = new Chilkat.StringBuilder();
-            sbCommands.Append($"echo {password} | sudo -S -p  ls;");
-                        
-            // Send the commands..
-            success = ssh.ChannelSendString(channelNum, sbCommands.GetAsString(), "ansi");
-            if (success != true)
-            {
-                Console.WriteLine(ssh.LastErrorText);
-                return;
-            }
+            WriteLog.WriteToFile($"===========================> {DateTime.Now.ToString("dd/MM/yyyy HH:mm:ss tt")} <=========================== ");
+            WriteLog.WriteToFile($"================================> BEGIN <============================================== ");
+            WriteLog.WriteToFile(strOutput);
+            WriteLog.WriteToFile($"================================> END <============================================== ");
 
-            success = ssh.ChannelSendEof(channelNum);
-
-            // Receive output up to our marker.
-            success = ssh.ChannelReceiveUntilMatch(channelNum, "THIS IS THE END OF THE SCRIPT", "ansi", true);
-
-            // Close the channel.
-            // It is important to close the channel only after receiving the desired output.
-            success = ssh.ChannelSendClose(channelNum);
-
-            // Get any remaining output..
-            success = ssh.ChannelReceiveToClose(channelNum);
-
-            // Get the complete output for all the commands in the session.
-            Console.WriteLine("--- output ----");
-            Console.WriteLine(ssh.GetReceivedText(channelNum, "ansi"));
-            
+            Console.WriteLine("---- Successfully saved to Log.txt ----");
+            Console.WriteLine("---- FINISH ----");      
         }
     }
 }

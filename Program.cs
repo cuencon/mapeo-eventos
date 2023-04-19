@@ -6,9 +6,9 @@ namespace Buzz.TxLeague.Women.Config
     public class Program
     {
         public static void Main(string[] args)
-        {
+        {            
             Console.WriteLine("Recreate Games?? (Y/N)");
-            var response = Console.ReadLine();
+            var response = Console.ReadLine();            
             if (response.ToUpper() == "Y")
             {
                 Console.WriteLine("Put the events ids separated by a comma");
@@ -19,7 +19,7 @@ namespace Buzz.TxLeague.Women.Config
             {
                 Console.WriteLine("Select the option");
                 Console.WriteLine("1 - Fix Tennis Events landing on Default Tennis League and sync with DGS database");
-                //Console.WriteLine("2 - Check the events to be mapped from other leagues");
+                Console.WriteLine("2 - Check the events to be mapped from other leagues");
                 //Console.WriteLine("3 - Set new League for PROPS in the config for non-major basketball and baseball leagues");
                 //Console.WriteLine("4 - Change the SportId from MU to SOC, for Futsal leagues in DGS");
                 response = Console.ReadLine();
@@ -33,18 +33,20 @@ namespace Buzz.TxLeague.Women.Config
                     case "2":
                         //var handler = new SetNewConfigForPlayerPropsOverUnder(new Lineshouse.LineshouseContext(), new());
                         //handler.Handle();
-                        CheckEventsFromOtherLeagues.Check("2023-04-4 00:00:00");
+                        Console.WriteLine("Enter the date in the following format: 2023-03-16");
+                        var responseFecha = Console.ReadLine();                        
+                        CheckEventsFromOtherLeagues.Check(responseFecha);
                         break;
 
-                    case "3":
-                        var basballAndBasketNonMajorPropsHandler = new BasballAndBasketNonMajorPropsHandler(new());
-                        basballAndBasketNonMajorPropsHandler.Handle();
-                        break;
+                    //case "3":
+                    //    var basballAndBasketNonMajorPropsHandler = new BasballAndBasketNonMajorPropsHandler(new());
+                    //    basballAndBasketNonMajorPropsHandler.Handle();
+                    //    break;
 
-                    case "4":
-                        var fusalSportIdFromMUToSOCHandler = new FutsalConfigHandler(new(), new());
-                        fusalSportIdFromMUToSOCHandler.Handle();
-                        break;
+                    //case "4":
+                    //    var fusalSportIdFromMUToSOCHandler = new FutsalConfigHandler(new(), new());
+                    //    fusalSportIdFromMUToSOCHandler.Handle();
+                    //    break;
                 }
                 //var womenLeagueCleanerHandler = new WomenLeagueCleanerHandler(new(),new());
                 //womenLeagueCleanerHandler.Handle();

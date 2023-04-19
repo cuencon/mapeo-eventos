@@ -14,8 +14,8 @@ namespace Buzz.TxLeague.Women.Config.Utils
         {            
             var eventsIdsArray = arrayOfEventIds.Replace(",", " ");
             var hostname = "10.0.0.181";
-            var username = "sysusr";
-            var password = "Qev5?AA.";
+            var username = "lines-support01";
+            var password = "sQN1IaHGmu42@1";
             int port = 22;
 
             Chilkat.Ssh ssh = new Chilkat.Ssh();
